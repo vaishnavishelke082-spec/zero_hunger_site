@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZeroHunger | Surplus Food Matching</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#top">Zero<span>Hunger</span></a>
+  <nav>
+    <a href="#how">How it works</a>
+    <a href="#demo">Live demo</a>
+    <a href="#impact">Impact</a>
+    <a href="#ml">AI / ML</a>
+  </nav>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <p class="eyebrow">Sustainable Development Goal 2</p>
+    <h1>Turning surplus food into meals</h1>
+    <p class="lead">A platform that matches surplus food from restaurants, farms and retailers with the food banks and NGOs that need it, before it goes to waste.</p>
+    <a class="btn" href="#demo">Try the matching demo</a>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <h2>How it works</h2>
+    <div class="steps">
+      <article class="card"><span class="num">1</span><h3>List</h3><p>A donor posts surplus food with quantity, type and pickup window.</p></article>
+      <article class="card"><span class="num">2</span><h3>Match</h3><p>The AI ranks nearby food banks and NGOs by fit, distance and urgency.</p></article>
+      <article class="card"><span class="num">3</span><h3>Collect</h3><p>A volunteer or partner vehicle picks the food up in time.</p></article>
+      <article class="card"><span class="num">4</span><h3>Deliver</h3><p>Meals reach people in need and the donation is logged for impact reports.</p></article>
+    </div>
+  </section>
+
+  <!-- LIVE DEMO -->
+  <section id="demo" class="section alt">
+    <h2>Live demo: find the best match</h2>
+    <p class="muted">Enter a donation. The engine scores every NGO and shows the ranked result with a breakdown.</p>
+
+    <div class="demo-grid">
+      <form id="donation-form" class="panel" autocomplete="off">
+        <h3>Donation details</h3>
+        <label>Donor area
+          <select id="area"></select>
+        </label>
+        <label>Food type
+          <select id="type">
+            <option value="cooked">Cooked meals</option>
+            <option value="produce">Fresh produce</option>
+            <option value="bakery">Bakery items</option>
+            <option value="packaged">Packaged food</option>
+          </select>
+        </label>
+        <label>Quantity (meals)
+          <input id="qty" type="number" min="1" max="2000" value="80" required>
+        </label>
+        <label>Hours until it spoils
+          <input id="hours" type="number" min="0.5" max="72" step="0.5" value="4" required>
+        </label>
+
+        <h3 class="sub">Model weights</h3>
+        <label class="range">Distance <output id="w-dist-o">40</output>
+          <input id="w-dist" type="range" min="0" max="100" value="40">
+        </label>
+        <label class="range">Urgency of need <output id="w-urg-o">30</output>
+          <input id="w-urg" type="range" min="0" max="100" value="30">
+        </label>
+        <label class="range">Capacity and food-type fit <output id="w-fit-o">30</output>
+          <input id="w-fit" type="range" min="0" max="100" value="30">
+        </label>
+        <button class="btn" type="submit">Find matches</button>
+      </form>
+
+      <div class="panel">
+        <h3>Ranked matches</h3>
+        <div id="results" class="results" aria-live="polite">
+          <p class="muted">Results will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section id="impact" class="section">
+    <h2>Impact dashboard</h2>
+    <div class="kpis">
+      <div class="kpi"><strong data-count="12840">0</strong><span>Meals delivered</span></div>
+      <div class="kpi"><strong data-count="5120">0</strong><span>Kg of food diverted</span></div>
+      <div class="kpi"><strong data-count="64">0</strong><span>Active donors</span></div>
+      <div class="kpi"><strong data-count="18">0</strong><span>Partner NGOs</span></div>
+    </div>
+    <p class="note">Sample numbers for demonstration only.</p>
+  </section>
+
+  <!-- ML -->
+  <section id="ml" class="section alt">
+    <h2>AI / ML: surplus forecast</h2>
+    <p class="muted">Exponential smoothing on weekly surplus (meals) predicts next week's supply so NGOs and volunteers can plan pickups ahead.</p>
+    <div class="panel">
+      <div id="chart" class="chart" role="img" aria-label="Weekly surplus bar chart with forecast"></div>
+      <p id="forecast-text" class="forecast-text"></p>
+    </div>
+
+    <div class="panel explain">
+      <h3>How the matching score works</h3>
+      <p><code>score = w1 &times; proximity + w2 &times; urgency + w3 &times; fit</code></p>
+      <ul>
+        <li><b>Proximity</b>: closer NGOs score higher (distance by the haversine formula).</li>
+        <li><b>Urgency</b>: how badly the NGO needs food right now.</li>
+        <li><b>Fit</b>: whether capacity covers the quantity and the food type is accepted.</li>
+        <li><b>Hard filter</b>: NGOs that cannot be reached before the food spoils are excluded.</li>
+      </ul>
+      <p class="muted">This is an explainable weighted-scoring baseline. With real data, the weights can be learned (for example by logistic regression on accepted vs. rejected matches) and the forecast replaced with ARIMA or a gradient-boosted model.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>ZeroHunger | Supporting SDG 2: Zero Hunger | Prototype for internship project</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
